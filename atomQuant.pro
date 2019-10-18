@@ -134,6 +134,21 @@ win32 {
 }
 
 
+linux {
+    !contains(QMAKE_TARGET.arch, x86_64) {
+        message("linux x86 build")
+    } else {
+        message("linux x86_64 build")
+        #ctp lib
+        CTP_DIR = $$PWD/thirdparty/ctp/6.3.15/linux64
+        INCLUDEPATH += $$CTP_DIR
+        LIBS += -L$$CTP_DIR -lthostmduserapi_se -lthosttraderapi_se
+        QMAKE_POST_LINK += copy /Y $$shell_path($$CTP_DIR/thostmduserapi_se.dll) $$shell_path($$DESTDIR) & copy /Y $$shell_path($$CTP_DIR/thosttraderapi_se.dll) $$shell_path($$DESTDIR)
+
+    }
+}
+
+
 #spdlog
 SPDLOG_DIR = $$PWD/src/log
 INCLUDEPATH += $$SPDLOG_DIR
