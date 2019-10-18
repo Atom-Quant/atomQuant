@@ -22,6 +22,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 
 HEADERS += \
+    src/eventhandler.h \
+    src/global.h \
     src/log/spdlog/async.h \
     src/log/spdlog/async_logger-inl.h \
     src/log/spdlog/async_logger.h \
@@ -98,7 +100,6 @@ HEADERS += \
     src/log/spdlog/spdlog.h \
     src/log/spdlog/tweakme.h \
     src/log/spdlog/version.h \
-    src/quotation/ctp/ctpmdspi.h \
     src/quotation/ctp/ctpquotation.h \
     src/quotation/ctp/ctpquotation.h \
     src/quotation/quotation.h \
@@ -106,8 +107,9 @@ HEADERS += \
 
 
 SOURCES += \
+        src/eventhandler.cpp \
+        src/global.cpp \
         src/main.cpp \
-        src/quotation/ctp/ctpmdspi.cpp \
         src/quotation/ctp/ctpquotation.cpp \
         src/quotation/ctp/ctpquotation.cpp \
         src/quotation/quotation.cpp \
@@ -116,6 +118,7 @@ SOURCES += \
 
 DISTFILES += \
     README.md \
+    setting.ini \
     src/log/spdlog/fmt/bundled/LICENSE.rst
 
 
@@ -137,17 +140,25 @@ win32 {
 linux {
     !contains(QMAKE_TARGET.arch, x86_64) {
         message("linux x86 build")
+        #ctp lib
+        CTP_DIR = $$PWD/thirdparty/ctp/6.3.15/linux64
+        INCLUDEPATH += $$CTP_DIR
+        LIBS += -L$$CTP_DIR -lthostmduserapi_se -lthosttraderapi_se
+        QMAKE_POST_LINK += copy /Y $$shell_path($$CTP_DIR/thostmduserapi_se.so) $$shell_path($$DESTDIR) & copy /Y $$shell_path($$CTP_DIR/thosttraderapi_se.so) $$shell_path($$DESTDIR)
     } else {
         message("linux x86_64 build")
         #ctp lib
         CTP_DIR = $$PWD/thirdparty/ctp/6.3.15/linux64
         INCLUDEPATH += $$CTP_DIR
         LIBS += -L$$CTP_DIR -lthostmduserapi_se -lthosttraderapi_se
-        QMAKE_POST_LINK += copy /Y $$shell_path($$CTP_DIR/thostmduserapi_se.dll) $$shell_path($$DESTDIR) & copy /Y $$shell_path($$CTP_DIR/thosttraderapi_se.dll) $$shell_path($$DESTDIR)
+        QMAKE_POST_LINK += copy /Y $$shell_path($$CTP_DIR/thostmduserapi_se.so) $$shell_path($$DESTDIR) & copy /Y $$shell_path($$CTP_DIR/thosttraderapi_se.so) $$shell_path($$DESTDIR)
 
     }
 }
 
+#src
+SRC_DIR = $$PWD/src
+INCLUDEPATH += $$SRC_DIR
 
 #spdlog
 SPDLOG_DIR = $$PWD/src/log
