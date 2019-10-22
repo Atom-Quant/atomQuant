@@ -22,6 +22,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 
 HEADERS += \
+    events.h \
     src/eventhandler.h \
     src/global.h \
     src/log/spdlog/async.h \
@@ -103,7 +104,9 @@ HEADERS += \
     src/quotation/ctp/ctpquotation.h \
     src/quotation/ctp/ctpquotation.h \
     src/quotation/quotation.h \
-    src/strategy/strategy.h
+    src/strategy/strategy.h \
+    src/strategy/strategymanager.h \
+    userStrategy/twinmovingaverage.h
 
 
 SOURCES += \
@@ -113,7 +116,9 @@ SOURCES += \
         src/quotation/ctp/ctpquotation.cpp \
         src/quotation/ctp/ctpquotation.cpp \
         src/quotation/quotation.cpp \
-        src/strategy/strategy.cpp
+        src/strategy/strategy.cpp \
+        src/strategy/strategymanager.cpp \
+        userStrategy/twinmovingaverage.cpp
 
 
 DISTFILES += \
@@ -169,3 +174,8 @@ QUOTATION_DIR = $$PWD/src/quotation
 INCLUDEPATH += \
         $$QUOTATION_DIR \
         $$QUOTATION_DIR/ctp
+
+#strategy
+STRATEGY_DIR = $$PWD/src/strategy
+INCLUDEPATH += \
+        $$STRATEGY_DIR \
