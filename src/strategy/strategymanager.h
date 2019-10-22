@@ -2,16 +2,24 @@
 #define STRATEGYMANAGER_H
 
 #include <QObject>
+#include <QMap>
+#include "strategy.h"
 
 class StrategyManager : public QObject
 {
     Q_OBJECT
 public:
-    explicit StrategyManager(QObject *parent = nullptr);
+     static StrategyManager* instance();
+     static void destroy();
 
-signals:
+     void initTwinMovingAverage();
 
-public slots:
+private:
+    static StrategyManager* pInstance;
+    StrategyManager(QObject *parent = nullptr);
+
+    QMap<int, Strategy*> _sid2strategyMap;
+    int _sid;
 };
 
 #endif // STRATEGYMANAGER_H

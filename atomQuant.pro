@@ -179,3 +179,8 @@ INCLUDEPATH += \
 STRATEGY_DIR = $$PWD/src/strategy
 INCLUDEPATH += \
         $$STRATEGY_DIR \
+
+#userstrategy
+USERSTRATEGY_DIR = $$PWD/userStrategy
+INCLUDEPATH += \
+        $$USERSTRATEGY_DIR \
